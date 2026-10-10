@@ -32,6 +32,11 @@ public class BookService {
         return repository.findById(id);
     }
 
+    public Book getById(long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new BookNotFoundException(id));
+    }
+
     public Book create(Book book) {
         Book newBook = new Book(null, book.title(), book.author(), book.year());
         return repository.save(newBook);

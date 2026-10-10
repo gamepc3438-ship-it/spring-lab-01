@@ -13,11 +13,16 @@ public class BookForm {
     private String title;
 
     @NotBlank(message = "{book.author.required}")
+    @NoDigits
     private String author;
 
+    @ValidCoverUrl
+    private String coverUrl;
+
+    @NotNull(message = "{book.year.required}")
     @Min(value = 1450, message = "{book.year.range}")
     @Max(value = 2100, message = "{book.year.range}")
-    private int year;
+    private Integer year;
 
     @NotNull(message = "{book.genre.required}")
     private Genre genre;
@@ -40,11 +45,19 @@ public class BookForm {
         this.author = author;
     }
 
-    public int getYear() {
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
+    }
+
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 

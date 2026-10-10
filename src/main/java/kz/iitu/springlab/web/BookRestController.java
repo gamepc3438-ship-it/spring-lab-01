@@ -28,10 +28,8 @@ public class BookRestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> find(@PathVariable long id) {
-        return service.findById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public Book find(@PathVariable long id) {
+        return service.getById(id);
     }
 
     @PostMapping
@@ -61,13 +59,7 @@ public class BookRestController {
 
     @GetMapping(value = "/{id}/citation", produces = "text/plain")
     public ResponseEntity<String> citation(@PathVariable long id) {
-        var book = service.findById(id);
-
-        if (book.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        Book found = book.get();
+        Book found = service.getById(id);
         String text = found.author() + ". "
                 + found.title() + ". "
                 + found.year() + ".";

@@ -8,6 +8,11 @@
 <body>
 <h1 th:text="#{book.new}">New book</h1>
 
+<p>
+    <a th:href="@{/books/new(lang='en')}">English</a> |
+    <a th:href="@{/books/new(lang='ru')}">Русский</a>
+</p>
+
 <form class="book-form"
       th:action="@{/books}"
       th:object="${form}"
@@ -28,6 +33,11 @@
     <input id="author" type="text" th:field="*{author}"
            th:errorclass="is-invalid">
     <span class="error" th:errors="*{author}"></span>
+
+    <label for="coverUrl" th:text="#{book.cover.url}">Cover image URL</label>
+    <input id="coverUrl" type="text" th:field="*{coverUrl}"
+           th:errorclass="is-invalid">
+    <span class="error" th:errors="*{coverUrl}"></span>
 
     <label for="year" th:text="#{book.year}">Year</label>
     <input id="year" type="number" th:field="*{year}"

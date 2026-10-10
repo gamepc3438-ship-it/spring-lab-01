@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,19 +28,22 @@ public class BookPageController {
     public String list(
             @RequestParam(required = false) String author,
             Model model) {
-
         model.addAttribute("books", service.findAll(author));
         model.addAttribute("author", author);
         model.addAttribute("title", "Catalogue");
-
         return "books/list";
+    }
+
+    @GetMapping("/{id}")
+    public String getById(@PathVariable long id) {
+        service.getById(id);
+        return "redirect:/books";
     }
 
     @GetMapping("/new")
     public String newForm(Model model) {
         model.addAttribute("form", new BookForm());
         model.addAttribute("genres", Genre.values());
-
         return "books/form";
     }
 
