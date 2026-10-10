@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{book.new}">New book</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<h1 th:text="#{book.new}">New book</h1>
+
+<p>
+    <a th:href="@{/books/new(lang='en')}">English</a> |
+    <a th:href="@{/books/new(lang='ru')}">Русский</a>
+</p>
+
+<form class="book-form"
+      th:action="@{/books}"
+      th:object="${form}"
+      method="post">
+
+    <div class="alert" th:if="${#fields.hasAnyErrors()}">
+        <ul>
+            <li th:each="e : ${#fields.allErrors()}" th:text="${e}"></li>
+        </ul>
+    </div>
+
+    <label for="title" th:text="#{book.title}">Title</label>
+    <input id="title" type="text" th:field="*{title}"
+           th:errorclass="is-invalid">
+    <span class="error" th:errors="*{title}"></span>
+
+    <label for="author" th:text="#{book.author}">Author</label>
+    <input id="author" type="text" th:field="*{author}"
+           th:errorclass="is-invalid">
+    <span class="error" th:errors="*{author}"></span>
+
+    <label for="coverUrl" th:text="#{book.cover.url}">Cover image URL</label>
+    <input id="coverUrl" type="text" th:field="*{coverUrl}"
+           th:errorclass="is-invalid">
+    <span class="error" th:errors="*{coverUrl}"></span>
+
+    <label for="year" th:text="#{book.year}">Year</label>
+    <input id="year" type="number" th:field="*{year}"
+           th:errorclass="is-invalid">
+    <span class="error" th:errors="*{year}"></span>
+
+    <label for="genre" th:text="#{book.genre}">Genre</label>
+    <select id="genre" th:field="*{genre}" th:errorclass="is-invalid">
+        <option value="" th:text="#{form.chooseGenre}">Select a genre</option>
+        <option th:each="g : ${genres}"
+                th:value="${g}"
+                th:text="${g}"></option>
+    </select>
+    <span class="error" th:errors="*{genre}"></span>
+
+    <label>
+        <input type="checkbox" th:field="*{available}">
+        <span th:text="#{form.available}">Available</span>
+    </label>
+
+    <button type="submit" th:text="#{form.submit}">Save</button>
+</form>
+
+<p>
+    <a th:href="@{/books}" th:text="#{form.back}">Back to catalogue</a>
+</p>
+</body>
+</html>
