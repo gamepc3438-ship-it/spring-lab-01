@@ -30,7 +30,13 @@ public class BookRepository {
 
     public Book save(Book book) {
         long id = book.id() != null ? book.id() : sequence.incrementAndGet();
-        Book stored = new Book(id, book.title(), book.author(), book.year());
+        Book stored = new Book(
+                id,
+                book.title(),
+                book.author(),
+                book.year(),
+                book.genre(),
+                book.createdAt());
         storage.put(id, stored);
         return stored;
     }

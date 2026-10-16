@@ -38,16 +38,41 @@ public class BookService {
     }
 
     public Book create(Book book) {
-        Book newBook = new Book(null, book.title(), book.author(), book.year());
+        boolean duplicate = repository.findAll().stream()
+                .anyMatch(existing ->
+                        existing.title().trim().equalsIgnoreCase(book.title().trim())
+                                && existing.author().trim().equalsIgnoreCase(book.author().trim()));
+
+        if (duplicate) {
+            throw new DuplicateTitleException(book.title(), book.author());
+        }
+
+        Book newBook = new Book(
+                null,
+                book.title(),
+                book.author(),
+                book.year(),
+                book.genre(),
+                book.createdAt());
+
         return repository.save(newBook);
     }
 
     public Optional<Book> replace(long id, Book book) {
-        if (repository.findById(id).isEmpty()) {
+        Optional<Book> existing = repository.findById(id);
+
+        if (existing.isEmpty()) {
             return Optional.empty();
         }
 
-        Book replacement = new Book(id, book.title(), book.author(), book.year());
+        Book replacement = new Book(
+                id,
+                book.title(),
+                book.author(),
+                book.year(),
+                book.genre(),
+                existing.get().createdAt());
+
         return Optional.of(repository.save(replacement));
     }
 

@@ -1,4 +1,4 @@
-package kz.iitu.springlab.web;
+package kz.iitu.springlab.catalog;
 
 public enum Genre {
     FICTION,
