@@ -1,0 +1,114 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 24px;
+    font-family: Arial, sans-serif;
+    color: #222;
+    background: #f4f6f8;
+}
+
+h1 {
+    color: #24476b;
+}
+
+form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 24px 0;
+}
+
+input,
+button,
+select {
+    padding: 8px 10px;
+    font-size: 15px;
+}
+
+button {
+    color: white;
+    background: #315f8c;
+    border: 0;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+th,
+td {
+    padding: 12px;
+    border: 1px solid #d5dce3;
+    text-align: left;
+}
+
+th {
+    color: white;
+    background: #315f8c;
+}
+
+tbody tr:nth-child(even) {
+    background: #eef3f7;
+}
+
+.flash {
+    padding: 12px;
+    color: #205b32;
+    background: #e3f4e8;
+    border: 1px solid #a9d5b4;
+}
+
+.book-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: stretch;
+    gap: 6px;
+    max-width: 520px;
+}
+
+.book-form label {
+    margin-top: 6px;
+}
+
+.book-form input[type="text"],
+.book-form input[type="number"],
+.book-form select {
+    width: 100%;
+    border: 1px solid #aab4bf;
+    border-radius: 4px;
+}
+
+.book-form input[type="checkbox"] {
+    width: auto;
+}
+
+.book-form button {
+    justify-self: start;
+    margin-top: 8px;
+}
+
+.is-invalid {
+    border: 1px solid #c62828 !important;
+}
+
+.error {
+    display: block;
+    margin-top: -4px;
+    color: #c62828;
+    font-size: 14px;
+}
+
+.alert {
+    padding: 12px;
+    color: #8b1e1e;
+    background: #ffebee;
+    border: 1px solid #e6a6a6;
+}
