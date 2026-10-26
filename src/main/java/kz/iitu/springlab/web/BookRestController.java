@@ -11,16 +11,19 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import kz.iitu.springlab.catalog.Book;
 import kz.iitu.springlab.catalog.BookNotFoundException;
 import kz.iitu.springlab.catalog.BookService;
+import kz.iitu.springlab.catalog.Genre;
 import kz.iitu.springlab.web.dto.BookMapper;
 import kz.iitu.springlab.web.dto.BookRequest;
 import kz.iitu.springlab.web.dto.BookResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.List;
 
 @Tag(name = "Books", description = "Book catalogue API")
 @RestController
@@ -40,15 +43,12 @@ public class BookRestController {
             @ApiResponse(responseCode = "200", description = "Books returned")
     })
     @GetMapping
-    public List<BookResponse> list(
-            @RequestParam(required = false) String author,
-            @RequestParam(defaultValue = "10") int limit) {
-
-        List<Book> books = service.findAll(author).stream()
-                .limit(limit)
-                .toList();
-
-        return mapper.toResponseList(books);
+    public Page<BookResponse> list(
+            @RequestParam(name = "genre", required = false) Genre genre,
+            @RequestParam(name = "author", required = false) String author,
+            @PageableDefault(size = 5, sort = "title") Pageable pageable) {
+        return service.find(genre, author, pageable)
+                .map(mapper::toResponse);
     }
 
     @Operation(summary = "Get a book by ID")
@@ -65,7 +65,6 @@ public class BookRestController {
     public ResponseEntity<BookResponse> find(
             @Parameter(description = "Identifier of the book", example = "42")
             @PathVariable long id) {
-
         Book book = service.getById(id);
         return ResponseEntity.ok(mapper.toResponse(book));
     }
@@ -98,7 +97,6 @@ public class BookRestController {
     @PostMapping
     public ResponseEntity<BookResponse> create(
             @RequestBody @Validated(BookRequest.OnCreate.class) BookRequest request) {
-
         Book saved = service.create(mapper.toBook(request));
 
         return ResponseEntity
@@ -127,7 +125,6 @@ public class BookRestController {
             @Parameter(description = "Identifier of the book", example = "42")
             @PathVariable long id,
             @RequestBody @Validated(BookRequest.OnUpdate.class) BookRequest request) {
-
         if (request.id().longValue() != id) {
             return ResponseEntity.badRequest().build();
         }
@@ -152,7 +149,6 @@ public class BookRestController {
     public ResponseEntity<Void> delete(
             @Parameter(description = "Identifier of the book", example = "42")
             @PathVariable long id) {
-
         if (!service.delete(id)) {
             throw new BookNotFoundException(id);
         }
@@ -174,7 +170,6 @@ public class BookRestController {
     public ResponseEntity<String> citation(
             @Parameter(description = "Identifier of the book", example = "42")
             @PathVariable long id) {
-
         Book book = service.getById(id);
 
         String text = book.author() + ". "
